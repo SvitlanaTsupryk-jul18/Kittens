@@ -11,8 +11,18 @@
 <body>
     <header>
         <div class="basket">
-
+            <p>Empty</p>
+            <p>You have:<span class="basket__num"></span>kittens</p>
         </div>
+        <template id="basket-cat">
+            <div class="basket__buy">
+                <p>№<span class="basket__num"></span></p>   
+                <div>Name : <span class="basket-name"></span></div>
+                <img class="basket-img" src="https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/1082340.svg"><br>
+                <div>for sale = <span class="basket-price">1</span></div>
+                <button type="button" class="no" >-</button>
+            </div>
+        </template>
     </header>
     <button type="button" class="js-add-cat">on</button>
     <div class="container">
@@ -35,15 +45,15 @@
 
     </div>
     <template id="template-cat">
-            <div class="card">
-                    <div class="card-inner">
-                        <div>for sale = <span class="cat-price">1</span></div>
-                        <img class="cat-img" src="https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/1082340.svg"><br>
-                        <span>#1082340</span>♡<span class="like">0</span>
-                        <p>Gen5 Swift</p>
-                        <button type="button" class="buy" >Buy</button>
-                    </div>
+        <div class="card">
+            <div class="card-inner">
+                <div>for sale = <span class="cat-price">1</span></div>
+                <img class="cat-img" src="https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/1082340.svg"><br>
+                <span>#1082340</span>♡<span class="like">0</span>
+                <p>Gen5 Swift</p>
+                <button type="button" class="buy" >Buy</button>
             </div>
+        </div>
     </template>
     <script src="script.js">
     </script>

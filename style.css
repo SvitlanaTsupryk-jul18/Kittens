@@ -35,3 +35,8 @@ body {
     background-color: aquamarine;
     display: flex;
 }
+
+.basket__img {
+    max-width: 50%;
+    height: 50%;
+}

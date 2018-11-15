@@ -1,24 +1,30 @@
 var add = document.querySelector(".js-add-cat");
 var t = document.querySelector("#template-cat");
 var cont = document.querySelector(".container");
-
+var bask = document.querySelector(".basket");
+var b = document.querySelector("#basket-cat");
+var bought = document.querySelector(".basket__num");
 var i = 0;
 var n = 1;
-
+var count = 0;
 
 getCats();
 
 //полуение котов по АПИ постранично
 
 function getCats() {
+
     console.log('n:', n);
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://ma-cats-api.herokuapp.com/api/cats?page=' + n, true);
+    request.open('GET', 'https://ma-cats-api.herokuapp.com/api/cats?page=' + n, true); //`${n++}`
     request.send();
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
             var data = JSON.parse(request.responseText);
             arr = data.cats;
+            // var arr = [];
+            // arr.concat(data);
+            // arr.push(data.cats);
         } else {
             // We reached our target server, but it returned an error
         }
@@ -30,13 +36,14 @@ function getCats() {
     request.onerror = function() {
         alert("error"); // There was a connection error of some sort
     };
+    //n++;
 }
 
 //кнопка, которая при клике вызывает ф-цию получения котов постранично
 add.addEventListener('click', addCats);
 
 function addCats() {
-
+    getCats();
     for (let i = 0; i < arr.length; i++) {
         var card = document.importNode(t.content, true);
         var cprice = card.querySelector(".cat-price");
@@ -46,16 +53,18 @@ function addCats() {
         cprice.innerHTML = arr[i].price;
         cimg.src = arr[i].img_url;
         let catid = arr[i].id;
+        bought.innerHTML = count;
         buy.addEventListener("click", function() {
-            // addToBasket(catid);
-            addToBasket(catid, i);
+            addToBasket(catid);
+
+            //addToBasket(catid, i);
             //console.log(catid, i);
         });
-        // console.log(arr[i]);
+
+        //console.log(arr[i]);
         // console.log(arr[i].id);
     }
     n++;
-    getCats();
 }
 
 // то же при доскроливании до последнео эл-та
@@ -97,18 +106,22 @@ window.onscroll = function() {
 
 var basket = []; // korzina
 //добавить в корзину
-function addToBasket(apiid, num) {
+function addToBasket(apiid) {
 
-    basket.push(arr[num]);
-
-
-    console.log(basket);
+    arr.forEach(function(item, i, arr) {
+        if (arr[i].id == apiid) {
+            basket.push(arr[i]);
+            count++;
+            // console.log(basket);
+        }
+    });
 
     //перевод эл-та в строку и запись в LocalStorage
-    localStorage.setItem("cat", JSON.stringify(apiid));
+    localStorage.setItem("cat", JSON.stringify(basket));
 
     //isempty
-    //loadbasket();
+    loadbasket();
+
 }
 //localStorage
 // localStorage.setItem('cat', 'green');
@@ -128,29 +141,33 @@ function loadbasket() {
     if (localStorage.getItem('cat')) {
         //расшифровка и запись в переменную-
         basket = JSON.parse(localStorage.getItem('cat'));
-        console.log(basket);
+        //console.log(basket);
         showbasket();
     } else {
-        a.innerHTML = "nothing here"
+        a.innerHTML = "nothing here";
     }
 }
 
-var bask = document.querySelector(".basket");
+
 
 //выводит котов в корзину
 function showbasket() {
-    for (key in basket) {
-        var card = document.importNode(t.content, true);
-        //var cprice = card.querySelector(".cat-price");
-        //var cimg = card.querySelector(".cat-img");
-        bask.appendChild(card);
-        cprice.innerHTML = basket.price;
-        cimg.src = basket.img_url;
-        //console.log(arr[i]);
-        //console.log(arr[i].id);
 
+    for (let i = 0; i < basket.length; i++) {
+        let bcard = document.importNode(b.content, true);
+        let bname = bcard.querySelector(".basket-name");
+        let bprice = bcard.querySelector(".basket-price");
+        let bimg = bcard.querySelector(".basket-img");
+        bask.appendChild(bcard);
+        bname.innerHTML = basket[i].name;
+        bprice.innerHTML = basket[i].price;
+        bimg.src = basket[i].img_url;
+        bought.innerHTML = count;
+        console.log(basket[i]);
     }
+
 }
+
 
 
 function delet() {
